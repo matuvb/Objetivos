@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis Objetivos</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f4f4;
+    margin:40px;
+}
+
+h1{
+    text-align:center;
+}
+
+#nuevoObjetivo{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:30px;
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+input{
+    padding:8px;
+    margin:5px;
+}
+
+button{
+    padding:8px 15px;
+    cursor:pointer;
+}
+
+.objetivo{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+.barra{
+    width:100%;
+    height:28px;
+    background:#ddd;
+    border-radius:20px;
+    overflow:hidden;
+    margin:15px 0;
+}
+
+.relleno{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#4CAF50,#7CFC00);
+    transition:.3s;
+}
+
+.controles button{
+    margin-right:8px;
+}
+</style>
+
+</head>
+<body>
+
+<h1>🎯 Mis Objetivos</h1>
+
+<div id="nuevoObjetivo">
+
+<input id="nombre" placeholder="Nombre del objetivo">
+
+<input id="meta" type="number" placeholder="Meta">
+
+<button onclick="crearObjetivo()">Agregar</button>
+
+</div>
+
+<div id="lista"></div>
+
+<script>
+
+let objetivos = JSON.parse(localStorage.getItem("objetivos")) || [];
+
+function guardar(){
+    localStorage.setItem("objetivos",JSON.stringify(objetivos));
+}
+
+function crearObjetivo(){
+
+    let nombre=document.getElementById("nombre").value;
+
+    let meta=parseFloat(document.getElementById("meta").value);
+
+    if(nombre=="" || meta<=0) return;
+
+    objetivos.push({
+        nombre:nombre,
+        meta:meta,
+        progreso:0
+    });
+
+    guardar();
+
+    document.getElementById("nombre").value="";
+    document.getElementById("meta").value="";
+
+    mostrar();
+
+}
+
+function sumar(i){
+
+    let cantidad=prompt("¿Cuánto querés agregar?");
+
+    if(cantidad===null)return;
+
+    cantidad=parseFloat(cantidad);
+
+    if(isNaN(cantidad))return;
+
+    objetivos[i].progreso+=cantidad;
+
+    if(objetivos[i].progreso>objetivos[i].meta)
+        objetivos[i].progreso=objetivos[i].meta;
+
+    guardar();
+
+    mostrar();
+
+}
+
+function restar(i){
+
+    let cantidad=prompt("¿Cuánto querés restar?");
+
+    if(cantidad===null)return;
+
+    cantidad=parseFloat(cantidad);
+
+    if(isNaN(cantidad))return;
+
+    objetivos[i].progreso-=cantidad;
+
+    if(objetivos[i].progreso<0)
+        objetivos[i].progreso=0;
+
+    guardar();
+
+    mostrar();
+
+}
+
+function borrar(i){
+
+    if(confirm("¿Eliminar este objetivo?")){
+        objetivos.splice(i,1);
+        guardar();
+        mostrar();
+    }
+
+}
+
+function mostrar(){
+
+    let html="";
+
+    objetivos.forEach((o,i)=>{
+
+        let porcentaje=(o.progreso/o.meta)*100;
+
+        if(porcentaje>100) porcentaje=100;
+
+        html+=`
+        <div class="objetivo">
+
+        <h2>${o.nombre}</h2>
+
+        <div>${o.progreso} / ${o.meta}</div>
+
+        <div class="barra">
+            <div class="relleno" style="width:${porcentaje}%"></div>
+        </div>
+
+        <div>${porcentaje.toFixed(1)}%</div>
+
+        <div class="controles">
+
+        <button onclick="sumar(${i})">➕ Agregar progreso</button>
+
+        <button onclick="restar(${i})">➖ Restar</button>
+
+        <button onclick="borrar(${i})">🗑 Eliminar</button>
+
+        </div>
+
+        </div>
+        `;
+    });
+
+    document.getElementById("lista").innerHTML=html;
+
+}
+
+mostrar();
+
+</script>
+
+</body>
+</html>
