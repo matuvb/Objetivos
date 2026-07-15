@@ -1,1 +1,632 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
+:root{
+
+    --bg:#0f172a;
+    --card:#1e293b;
+    --card2:#334155;
+
+    --text:#f8fafc;
+    --text2:#94a3b8;
+
+    --accent:#3b82f6;
+
+    --shadow:0 15px 35px rgba(0,0,0,.35);
+
+    --radius:22px;
+
+}
+
+body.light{
+
+    --bg:#eef2ff;
+    --card:white;
+    --card2:#f1f5f9;
+
+    --text:#0f172a;
+    --text2:#64748b;
+
+}
+
+body{
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    font-family:'Inter',sans-serif;
+
+    transition:.3s;
+
+}
+
+.app{
+
+    width:min(1300px,95%);
+    margin:auto;
+
+    padding:40px 0 100px;
+
+}
+
+header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+header h1{
+
+    font-size:42px;
+
+    font-weight:700;
+
+}
+
+header p{
+
+    color:var(--text2);
+
+    margin-top:8px;
+
+}
+
+#themeButton{
+
+    width:58px;
+
+    height:58px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:var(--card);
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:22px;
+
+    box-shadow:var(--shadow);
+
+    transition:.25s;
+
+}
+
+#themeButton:hover{
+
+    transform:rotate(15deg) scale(1.08);
+
+}
+
+.dashboard{
+
+    display:grid;
+
+    grid-template-columns:320px 1fr;
+
+    gap:25px;
+
+    margin-bottom:30px;
+
+}
+
+.circle{
+
+    background:var(--card);
+
+    border-radius:var(--radius);
+
+    padding:30px;
+
+    position:relative;
+
+    box-shadow:var(--shadow);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.circle svg{
+
+    width:190px;
+
+    height:190px;
+
+    transform:rotate(-90deg);
+
+}
+
+.background{
+
+    fill:none;
+
+    stroke:#263243;
+
+    stroke-width:14;
+
+}
+
+.progress{
+
+    fill:none;
+
+    stroke:var(--accent);
+
+    stroke-width:14;
+
+    stroke-linecap:round;
+
+    stroke-dasharray:440;
+
+    stroke-dashoffset:440;
+
+    transition:.5s;
+
+}
+
+.circleText{
+
+    position:absolute;
+
+    text-align:center;
+
+}
+
+.circleText span{
+
+    display:block;
+
+    font-size:38px;
+
+    font-weight:bold;
+
+}
+
+.circleText small{
+
+    color:var(--text2);
+
+}
+
+.dashboardInfo{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+.card{
+
+    background:var(--card);
+
+    border-radius:var(--radius);
+
+    padding:25px;
+
+    box-shadow:var(--shadow);
+
+    transition:.25s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.card h3{
+
+    color:var(--text2);
+
+    font-weight:500;
+
+    margin-bottom:15px;
+
+}
+
+.card span{
+
+    font-size:30px;
+
+    font-weight:700;
+
+}
+
+.toolbar{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-bottom:30px;
+
+}
+
+.toolbar input,
+.toolbar select{
+
+    background:var(--card);
+
+    color:var(--text);
+
+    border:none;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    outline:none;
+
+    font-size:16px;
+
+}
+
+.toolbar input{
+
+    flex:1;
+
+}
+
+#goalList{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(350px,1fr));
+
+    gap:20px;
+
+}
+
+.goal{
+
+    background:var(--card);
+
+    border-radius:24px;
+
+    padding:25px;
+
+    box-shadow:var(--shadow);
+
+    transition:.25s;
+
+}
+
+.goal:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.goalTop{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.goalTitle{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.goalTitle .emoji{
+
+    font-size:35px;
+
+}
+
+.goalTitle h2{
+
+    font-size:22px;
+
+}
+
+.goalTitle p{
+
+    color:var(--text2);
+
+    margin-top:5px;
+
+}
+
+.bar{
+
+    width:100%;
+
+    height:16px;
+
+    background:#243244;
+
+    border-radius:50px;
+
+    overflow:hidden;
+
+    margin:18px 0;
+
+}
+
+.fill{
+
+    width:0;
+
+    height:100%;
+
+    border-radius:50px;
+
+    transition:.5s;
+
+}
+
+.goalFooter{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.goalButtons{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.goalButtons button{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    font-size:20px;
+
+    background:var(--card2);
+
+    color:white;
+
+    transition:.2s;
+
+}
+
+.goalButtons button:hover{
+
+    transform:scale(1.12);
+
+}
+
+#addButton{
+
+    position:fixed;
+
+    bottom:35px;
+
+    right:35px;
+
+    width:72px;
+
+    height:72px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:linear-gradient(45deg,#3b82f6,#2563eb);
+
+    color:white;
+
+    font-size:42px;
+
+    cursor:pointer;
+
+    box-shadow:var(--shadow);
+
+    transition:.25s;
+
+}
+
+#addButton:hover{
+
+    transform:scale(1.1) rotate(90deg);
+
+}
+
+#modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.55);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.hidden{
+
+    display:none !important;
+
+}
+
+.modalContent{
+
+    width:420px;
+
+    background:var(--card);
+
+    padding:30px;
+
+    border-radius:24px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+    box-shadow:var(--shadow);
+
+}
+
+.modalContent h2{
+
+    margin-bottom:10px;
+
+}
+
+.modalContent input,
+.modalContent select{
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:var(--card2);
+
+    color:white;
+
+    font-size:15px;
+
+}
+
+.modalButtons{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:10px;
+
+}
+
+.modalButtons button{
+
+    flex:1;
+
+    border:none;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+}
+
+#cancelButton{
+
+    background:#ef4444;
+
+    color:white;
+
+}
+
+#saveButton{
+
+    background:#22c55e;
+
+    color:white;
+
+}
+
+@media(max-width:900px){
+
+.dashboard{
+
+grid-template-columns:1fr;
+
+}
+
+.dashboardInfo{
+
+grid-template-columns:1fr 1fr;
+
+}
+
+}
+
+@media(max-width:600px){
+
+header{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:15px;
+
+}
+
+.dashboardInfo{
+
+grid-template-columns:1fr;
+
+}
+
+#goalList{
+
+grid-template-columns:1fr;
+
+}
+
+.toolbar{
+
+flex-direction:column;
+
+}
+
+.modalContent{
+
+width:95%;
+
+}
+
+}
