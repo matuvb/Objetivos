@@ -376,3 +376,257 @@
                 class="grid xl:grid-cols-2 gap-6 mt-10">
 
             </div>
+            <!-- ESTADO VACÍO -->
+
+            <div
+                id="emptyState"
+                class="hidden col-span-full">
+
+                <div
+                    class="bg-slate-900 rounded-3xl p-16 text-center border border-slate-800">
+
+                    <div class="text-7xl mb-6">
+                        🎯
+                    </div>
+
+                    <h2 class="text-3xl font-bold">
+                        Todavía no tenés objetivos
+                    </h2>
+
+                    <p class="text-slate-400 mt-4 text-lg">
+                        Creá tu primer objetivo presionando el botón +
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- BOTÓN FLOTANTE -->
+
+<button
+
+    id="addGoalButton"
+
+    class="fixed bottom-8 right-8 w-20 h-20 rounded-full bg-blue-600 hover:bg-blue-500 shadow-2xl text-5xl transition hover:scale-110 active:scale-95">
+
+    +
+
+</button>
+
+<!-- MODAL -->
+
+<div
+
+    id="goalModal"
+
+    class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center z-50">
+
+    <div
+
+        class="bg-slate-900 rounded-3xl w-full max-w-xl p-8 border border-slate-800">
+
+        <div class="flex justify-between items-center">
+
+            <h2 class="text-3xl font-bold">
+
+                Nuevo objetivo
+
+            </h2>
+
+            <button
+
+                id="closeModal"
+
+                class="text-3xl">
+
+                ✕
+
+            </button>
+
+        </div>
+
+        <div class="mt-8 space-y-5">
+
+            <input
+
+                id="goalEmoji"
+
+                class="w-full bg-slate-800 rounded-2xl p-4"
+
+                placeholder="😀 Emoji">
+
+            <input
+
+                id="goalName"
+
+                class="w-full bg-slate-800 rounded-2xl p-4"
+
+                placeholder="Nombre">
+
+            <input
+
+                id="goalTarget"
+
+                type="number"
+
+                class="w-full bg-slate-800 rounded-2xl p-4"
+
+                placeholder="Meta">
+
+            <select
+
+                id="goalUnit"
+
+                class="w-full bg-slate-800 rounded-2xl p-4">
+
+                <option>pasos</option>
+                <option>horas</option>
+                <option>minutos</option>
+                <option>litros</option>
+                <option>km</option>
+                <option>kg</option>
+                <option>páginas</option>
+                <option>sesiones</option>
+                <option>personalizado</option>
+
+            </select>
+
+            <select
+
+                id="goalCategory"
+
+                class="w-full bg-slate-800 rounded-2xl p-4">
+
+                <option>❤️ Salud</option>
+                <option>📚 Estudio</option>
+                <option>💼 Trabajo</option>
+                <option>🏋 Gimnasio</option>
+                <option>💰 Finanzas</option>
+                <option>🧠 Desarrollo personal</option>
+                <option>🎮 Ocio</option>
+
+            </select>
+
+            <div>
+
+                <label class="text-slate-400">
+
+                    Color de la barra
+
+                </label>
+
+                <input
+
+                    id="goalColor"
+
+                    type="color"
+
+                    value="#3B82F6"
+
+                    class="w-full h-16 bg-slate-800 rounded-xl mt-2">
+
+            </div>
+
+        </div>
+
+        <div class="flex gap-4 mt-8">
+
+            <button
+
+                id="cancelButton"
+
+                class="flex-1 bg-slate-700 hover:bg-slate-600 rounded-2xl p-4">
+
+                Cancelar
+
+            </button>
+
+            <button
+
+                id="saveGoal"
+
+                class="flex-1 bg-blue-600 hover:bg-blue-500 rounded-2xl p-4 font-bold">
+
+                Guardar objetivo
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- TOAST -->
+
+<div
+
+    id="toast"
+
+    class="hidden fixed top-6 right-6 bg-green-500 text-white rounded-2xl px-6 py-4 shadow-2xl">
+
+    Objetivo guardado
+
+</div>
+
+<!-- MENÚ CONTEXTUAL -->
+
+<div
+
+    id="contextMenu"
+
+    class="hidden fixed bg-slate-900 border border-slate-700 rounded-2xl p-2 shadow-2xl">
+
+    <button
+        id="editGoal"
+        class="block w-full text-left px-4 py-3 rounded-xl hover:bg-slate-800">
+
+        ✏️ Editar
+
+    </button>
+
+    <button
+        id="deleteGoal"
+        class="block w-full text-left px-4 py-3 rounded-xl hover:bg-slate-800 text-red-400">
+
+        🗑 Eliminar
+
+    </button>
+
+</div>
+
+<!-- LOADER -->
+
+<div
+
+    id="loader"
+
+    class="hidden fixed inset-0 bg-slate-950 flex justify-center items-center">
+
+    <div
+
+        class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin">
+
+    </div>
+
+</div>
+
+<footer
+
+    class="border-t border-slate-800 mt-16 py-8 text-center text-slate-500">
+
+    Momentum © 2026
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
