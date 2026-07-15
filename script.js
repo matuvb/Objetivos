@@ -431,3 +431,156 @@ class="flex-1 bg-red-600 rounded-xl py-3">
     updateDashboard();
 
 }
+//===========================
+// SUMAR PROGRESO
+//===========================
+
+function addProgress(id){
+
+    const goal = goals.find(g => g.id === id);
+
+    if(!goal) return;
+
+    goal.progress++;
+
+    if(goal.progress > goal.target){
+
+        goal.progress = goal.target;
+
+    }
+
+    save();
+
+    render();
+
+}
+
+//===========================
+// RESTAR PROGRESO
+//===========================
+
+function subtractProgress(id){
+
+    const goal = goals.find(g => g.id === id);
+
+    if(!goal) return;
+
+    goal.progress--;
+
+    if(goal.progress < 0){
+
+        goal.progress = 0;
+
+    }
+
+    save();
+
+    render();
+
+}
+
+//===========================
+// ELIMINAR
+//===========================
+
+function deleteGoal(id){
+
+    if(!confirm("¿Eliminar este objetivo?")){
+
+        return;
+
+    }
+
+    goals = goals.filter(goal => goal.id !== id);
+
+    save();
+
+    render();
+
+}
+
+//===========================
+// BUSCADOR
+//===========================
+
+search.addEventListener("input", render);
+
+//===========================
+// FILTROS
+//===========================
+
+filter.addEventListener("change", render);
+
+//===========================
+// MODO OSCURO
+//===========================
+
+const themeButton = document.getElementById("themeButton");
+
+let darkMode = true;
+
+themeButton.addEventListener("click", ()=>{
+
+    darkMode = !darkMode;
+
+    if(darkMode){
+
+        document.body.classList.remove("bg-white");
+        document.body.classList.remove("text-black");
+
+        document.body.classList.add("bg-slate-950");
+        document.body.classList.add("text-white");
+
+        themeButton.textContent="🌙";
+
+    }else{
+
+        document.body.classList.remove("bg-slate-950");
+        document.body.classList.remove("text-white");
+
+        document.body.classList.add("bg-white");
+        document.body.classList.add("text-black");
+
+        themeButton.textContent="☀️";
+
+    }
+
+});
+
+//===========================
+// ATAJO ESC
+//===========================
+
+document.addEventListener("keydown",(e)=>{
+
+    if(e.key==="Escape"){
+
+        hideModal();
+
+    }
+
+});
+
+//===========================
+// CERRAR MODAL
+//===========================
+
+goalModal.addEventListener("click",(e)=>{
+
+    if(e.target===goalModal){
+
+        hideModal();
+
+    }
+
+});
+
+//===========================
+// INICIO
+//===========================
+
+loadDate();
+
+render();
+
+showToast("Momentum iniciado 🚀");
