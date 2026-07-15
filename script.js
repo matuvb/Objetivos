@@ -1,57 +1,52 @@
-// =========================
-// LifeTracker v1
-// =========================
+// ==========================
+// Momentum v1 - Parte 1
+// ==========================
 
-let goals = JSON.parse(localStorage.getItem("lifetracker-goals")) || [];
+const STORAGE_KEY = "momentum-goals";
 
-const goalList = document.getElementById("goalList");
+let goals = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-const modal = document.getElementById("modal");
+//---------------------------
+// ELEMENTOS
+//---------------------------
 
-const addButton = document.getElementById("addButton");
+const goalsContainer = document.getElementById("goals");
+
+const addGoalButton = document.getElementById("addGoalButton");
+
+const goalModal = document.getElementById("goalModal");
+
+const closeModal = document.getElementById("closeModal");
+
 const cancelButton = document.getElementById("cancelButton");
-const saveButton = document.getElementById("saveButton");
 
-const themeButton = document.getElementById("themeButton");
+const saveGoalButton = document.getElementById("saveGoal");
 
-const searchInput = document.getElementById("search");
-const filterSelect = document.getElementById("filter");
+const search = document.getElementById("search");
 
-const goalName = document.getElementById("goalName");
-const goalEmoji = document.getElementById("goalEmoji");
-const goalTarget = document.getElementById("goalTarget");
-const goalUnit = document.getElementById("goalUnit");
-const goalCategory = document.getElementById("goalCategory");
-const goalColor = document.getElementById("goalColor");
+const filter = document.getElementById("filter");
 
-const generalPercent = document.getElementById("generalPercent");
-const completedCount = document.getElementById("completedCount");
-const goalCount = document.getElementById("goalCount");
+const emptyState = document.getElementById("emptyState");
 
-const progressCircle = document.getElementById("progressCircle");
+const toast = document.getElementById("toast");
 
-const fecha = document.getElementById("fecha");
+const todayDate = document.getElementById("todayDate");
 
-const CIRCLE_LENGTH = 440;
+const goalCounter = document.getElementById("goalCounter");
 
-//============================
+const completedCounter = document.getElementById("completedCounter");
 
-function saveData(){
+const globalPercent = document.getElementById("globalPercent");
 
-    localStorage.setItem(
-        "lifetracker-goals",
-        JSON.stringify(goals)
-    );
+//---------------------------
+// FECHA
+//---------------------------
 
-}
-
-//============================
-
-function updateDate(){
+function loadDate(){
 
     const now = new Date();
 
-    fecha.textContent =
+    todayDate.textContent =
         now.toLocaleDateString(
             "es-UY",
             {
@@ -64,237 +59,310 @@ function updateDate(){
 
 }
 
-//============================
+//---------------------------
+// GUARDAR
+//---------------------------
+
+function save(){
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(goals)
+    );
+
+}
+
+//---------------------------
+// MODAL
+//---------------------------
 
 function openModal(){
 
-    modal.classList.remove("hidden");
+    goalModal.classList.remove("hidden");
 
 }
 
-function closeModal(){
+function hideModal(){
 
-    modal.classList.add("hidden");
+    goalModal.classList.add("hidden");
 
 }
 
-//============================
+addGoalButton.onclick=openModal;
 
-addButton.onclick = openModal;
+closeModal.onclick=hideModal;
 
-cancelButton.onclick = closeModal;
+cancelButton.onclick=hideModal;
 
-//============================
+//---------------------------
+// TOAST
+//---------------------------
 
-saveButton.onclick = ()=>{
+function showToast(text){
 
-    if(goalName.value.trim()=="") return;
+    toast.textContent=text;
 
-    if(goalTarget.value<=0) return;
+    toast.classList.remove("hidden");
+
+    setTimeout(()=>{
+
+        toast.classList.add("hidden");
+
+    },2000);
+
+}
+
+//---------------------------
+// CREAR OBJETIVO
+//---------------------------
+
+saveGoalButton.onclick=function(){
+
+    const emoji =
+        document.getElementById("goalEmoji").value || "🎯";
+
+    const name =
+        document.getElementById("goalName").value.trim();
+
+    const target =
+        Number(
+            document.getElementById("goalTarget").value
+        );
+
+    const unit =
+        document.getElementById("goalUnit").value;
+
+    const category =
+        document.getElementById("goalCategory").value;
+
+    const color =
+        document.getElementById("goalColor").value;
+
+    if(name==""){
+
+        alert("Ingresá un nombre.");
+
+        return;
+
+    }
+
+    if(target<=0){
+
+        alert("La meta debe ser mayor que 0.");
+
+        return;
+
+    }
 
     goals.push({
 
         id:Date.now(),
 
-        emoji:goalEmoji.value || "🎯",
+        emoji,
 
-        name:goalName.value,
+        name,
 
-        target:Number(goalTarget.value),
+        target,
 
         progress:0,
 
-        unit:goalUnit.value,
+        unit,
 
-        category:goalCategory.value,
+        category,
 
-        color:goalColor.value
+        color
 
     });
 
-    goalName.value="";
-    goalEmoji.value="";
-    goalTarget.value="";
-    goalColor.value="#4CAF50";
-
-    closeModal();
-
-    saveData();
+    save();
 
     render();
+
+    hideModal();
+
+    showToast("Objetivo creado.");
+
+    document.getElementById("goalEmoji").value="";
+
+    document.getElementById("goalName").value="";
+
+    document.getElementById("goalTarget").value="";
 
 };
 
-//============================
-
-function removeGoal(id){
-
-    goals = goals.filter(g=>g.id!=id);
-
-    saveData();
-
-    render();
-
-}
-
-//============================
-
-function addProgress(id){
-
-    const goal = goals.find(g=>g.id==id);
-
-    if(!goal) return;
-
-    goal.progress++;
-
-    if(goal.progress>goal.target)
-        goal.progress=goal.target;
-
-    saveData();
-
-    render();
-
-}
-
-//============================
-
-function subtractProgress(id){
-
-    const goal = goals.find(g=>g.id==id);
-
-    if(!goal) return;
-
-    goal.progress--;
-
-    if(goal.progress<0)
-        goal.progress=0;
-
-    saveData();
-
-    render();
-
-}
-
-//============================
+//---------------------------
+// DASHBOARD
+//---------------------------
 
 function updateDashboard(){
 
-    goalCount.textContent = goals.length;
+    goalCounter.textContent=goals.length;
 
-    let completed =
-        goals.filter(g=>g.progress>=g.target).length;
+    let completed=0;
 
-    completedCount.textContent = completed;
-
-    let percent = 0;
-
-    if(goals.length>0){
-
-        goals.forEach(g=>{
-
-            percent += (g.progress/g.target);
-
-        });
-
-        percent /= goals.length;
-
-    }
-
-    percent*=100;
-
-    generalPercent.textContent =
-        Math.round(percent)+"%";
-
-    const offset =
-        CIRCLE_LENGTH -
-        (percent/100)*CIRCLE_LENGTH;
-
-    progressCircle.style.strokeDashoffset =
-        offset;
-
-}
-
-//============================
-
-function render(){
-
-    goalList.innerHTML="";
-
-    let search =
-        searchInput.value.toLowerCase();
+    let total=0;
 
     goals.forEach(goal=>{
 
-        let completed =
+        total+=goal.progress/goal.target;
+
+        if(goal.progress>=goal.target){
+
+            completed++;
+
+        }
+
+    });
+
+    completedCounter.textContent=completed;
+
+    let percent=0;
+
+    if(goals.length>0){
+
+        percent=Math.round(
+            total/goals.length*100
+        );
+
+    }
+
+    globalPercent.textContent=
+        percent+"%";
+
+}
+
+//---------------------------
+// RENDER
+//---------------------------
+
+function render(){
+
+    goalsContainer.innerHTML="";
+
+    let visible=0;
+
+    const text=
+        search.value.toLowerCase();
+
+    goals.forEach(goal=>{
+
+        const completed=
             goal.progress>=goal.target;
 
         if(
             !goal.name
             .toLowerCase()
-            .includes(search)
-        ) return;
+            .includes(text)
+        ){
+
+            return;
+
+        }
 
         if(
-            filterSelect.value=="completed"
-            && !completed
-        ) return;
+            filter.value=="completed"
+            &&
+            !completed
+        ){
+
+            return;
+
+        }
 
         if(
-            filterSelect.value=="pending"
-            && completed
-        ) return;
+            filter.value=="pending"
+            &&
+            completed
+        ){
 
-        const percent =
-            (goal.progress/goal.target)*100;
+            return;
 
-        goalList.innerHTML += `
+        }
 
-<div class="goal">
+        visible++;
 
-<div class="goalTop">
+        const percent=
+            Math.min(
+                100,
+                goal.progress/goal.target*100
+            );
 
-<div class="goalTitle">
+        goalsContainer.innerHTML+=`
 
-<div class="emoji">
+<div
+class="bg-slate-900 rounded-3xl p-6 border border-slate-800">
+
+<div class="flex justify-between">
+
+<div>
+
+<div class="text-4xl">
 
 ${goal.emoji}
 
 </div>
 
-<div>
+<h2
+class="text-2xl font-bold mt-2">
 
-<h2>${goal.name}</h2>
+${goal.name}
 
-<p>${goal.category}</p>
+</h2>
+
+<p
+class="text-slate-400">
+
+${goal.category}
+
+</p>
 
 </div>
-
-</div>
-
-</div>
-
-<div class="bar">
 
 <div
-class="fill"
-style="
-width:${percent}%;
-background:${goal.color};
-">
+class="text-right">
+
+<div
+class="text-sm text-slate-400">
+
+Meta
+
+</div>
+
+<div
+class="text-xl font-bold">
+
+${goal.target}
+
+${goal.unit}
 
 </div>
 
 </div>
 
-<div class="goalFooter">
+</div>
+
+<div
+class="mt-6">
+
+<div
+class="h-4 bg-slate-800 rounded-full overflow-hidden">
+
+<div
+
+style="width:${percent}%;background:${goal.color}"
+
+class="h-full rounded-full">
+
+</div>
+
+</div>
+
+<div
+class="flex justify-between mt-3">
 
 <div>
 
-<b>
-
 ${goal.progress}
-
-</b>
 
 /
 
@@ -304,21 +372,44 @@ ${goal.unit}
 
 </div>
 
-<div class="goalButtons">
+<div>
 
-<button onclick="subtractProgress(${goal.id})">
+${Math.round(percent)}%
 
-−
+</div>
+
+</div>
+
+</div>
+
+<div
+class="flex gap-3 mt-8">
+
+<button
+
+onclick="subtractProgress(${goal.id})"
+
+class="flex-1 bg-slate-700 rounded-xl py-3">
+
+➖
 
 </button>
 
-<button onclick="addProgress(${goal.id})">
+<button
 
-+
+onclick="addProgress(${goal.id})"
+
+class="flex-1 bg-blue-600 rounded-xl py-3">
+
+➕
 
 </button>
 
-<button onclick="removeGoal(${goal.id})">
+<button
+
+onclick="deleteGoal(${goal.id})"
+
+class="flex-1 bg-red-600 rounded-xl py-3">
 
 🗑
 
@@ -328,32 +419,15 @@ ${goal.unit}
 
 </div>
 
-</div>
-
 `;
 
     });
 
+    emptyState.classList.toggle(
+        "hidden",
+        visible!==0
+    );
+
     updateDashboard();
 
 }
-
-//============================
-
-themeButton.onclick=()=>{
-
-    document.body.classList.toggle("light");
-
-}
-
-//============================
-
-searchInput.oninput=render;
-
-filterSelect.onchange=render;
-
-//============================
-
-updateDate();
-
-render();
