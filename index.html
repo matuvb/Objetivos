@@ -1,217 +1,378 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LifeTracker</title>
 
-    <link rel="stylesheet" href="style.css">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Momentum</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script>
+
+        tailwind.config = {
+
+            darkMode: "class",
+
+            theme: {
+
+                extend: {
+
+                    fontFamily: {
+
+                        sans: ["Inter"]
+
+                    },
+
+                    colors: {
+
+                        primary: "#3B82F6",
+
+                        success: "#22C55E",
+
+                        danger: "#EF4444",
+
+                        warning: "#F59E0B"
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    </script>
 
 </head>
 
-<body>
+<body class="bg-slate-950 text-white font-sans">
 
-<div class="app">
+<div class="flex min-h-screen">
 
-    <header>
+    <!-- SIDEBAR -->
 
-        <div>
+    <aside
+        class="w-72 bg-slate-900 border-r border-slate-800 flex flex-col">
 
-            <h1>LifeTracker</h1>
+        <div class="p-8">
 
-            <p id="fecha"></p>
+            <h1 class="text-3xl font-bold">
 
-        </div>
+                🚀 Momentum
 
-        <button id="themeButton">
-            🌙
-        </button>
+            </h1>
 
-    </header>
+            <p class="text-slate-400 mt-2">
 
-    <section class="dashboard">
+                Centro de control personal
 
-        <div class="circle">
-
-            <svg>
-
-                <circle
-                    class="background"
-                    cx="90"
-                    cy="90"
-                    r="70">
-                </circle>
-
-                <circle
-                    id="progressCircle"
-                    class="progress"
-                    cx="90"
-                    cy="90"
-                    r="70">
-                </circle>
-
-            </svg>
-
-            <div class="circleText">
-
-                <span id="generalPercent">0%</span>
-
-                <small>Hoy</small>
-
-            </div>
+            </p>
 
         </div>
 
-        <div class="dashboardInfo">
+        <nav class="flex-1 px-5 space-y-2">
 
-            <div class="card">
+            <button
+                class="w-full text-left rounded-xl bg-blue-600 px-5 py-4 font-semibold">
 
-                <h3>Objetivos</h3>
+                🏠 Dashboard
 
-                <span id="goalCount">0</span>
-
-            </div>
-
-            <div class="card">
-
-                <h3>Completados</h3>
-
-                <span id="completedCount">0</span>
-
-            </div>
-
-            <div class="card">
-
-                <h3>Racha</h3>
-
-                <span>🔥 0</span>
-
-            </div>
-
-            <div class="card">
-
-                <h3>Nivel</h3>
-
-                <span>⭐ 1</span>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <section class="toolbar">
-
-        <input
-        id="search"
-        placeholder="Buscar objetivo...">
-
-        <select id="filter">
-
-            <option value="all">Todos</option>
-
-            <option value="pending">Pendientes</option>
-
-            <option value="completed">Completados</option>
-
-        </select>
-
-    </section>
-
-    <section id="goalList">
-
-    </section>
-
-</div>
-
-<button id="addButton">
-+
-</button>
-
-<div id="modal" class="hidden">
-
-    <div class="modalContent">
-
-        <h2>Nuevo objetivo</h2>
-
-        <input
-        id="goalEmoji"
-        placeholder="😀 Emoji">
-
-        <input
-        id="goalName"
-        placeholder="Nombre">
-
-        <input
-        id="goalTarget"
-        type="number"
-        placeholder="Meta">
-
-        <select id="goalUnit">
-
-            <option>pasos</option>
-
-            <option>horas</option>
-
-            <option>minutos</option>
-
-            <option>litros</option>
-
-            <option>km</option>
-
-            <option>kg</option>
-
-            <option>páginas</option>
-
-            <option>sesiones</option>
-
-            <option>personalizado</option>
-
-        </select>
-
-        <select id="goalCategory">
-
-            <option>❤️ Salud</option>
-
-            <option>📚 Estudio</option>
-
-            <option>🏋 Gimnasio</option>
-
-            <option>💼 Trabajo</option>
-
-            <option>💰 Finanzas</option>
-
-            <option>🧠 Personal</option>
-
-            <option>🎮 Ocio</option>
-
-        </select>
-
-        <input
-        type="color"
-        id="goalColor"
-        value="#4CAF50">
-
-        <div class="modalButtons">
-
-            <button id="cancelButton">
-                Cancelar
             </button>
 
-            <button id="saveButton">
-                Guardar
+            <button
+                class="w-full text-left rounded-xl hover:bg-slate-800 px-5 py-4">
+
+                🎯 Objetivos
+
             </button>
+
+            <button
+                class="w-full text-left rounded-xl hover:bg-slate-800 px-5 py-4">
+
+                📊 Estadísticas
+
+            </button>
+
+            <button
+                class="w-full text-left rounded-xl hover:bg-slate-800 px-5 py-4">
+
+                📅 Calendario
+
+            </button>
+
+            <button
+                class="w-full text-left rounded-xl hover:bg-slate-800 px-5 py-4">
+
+                🏆 Logros
+
+            </button>
+
+            <button
+                class="w-full text-left rounded-xl hover:bg-slate-800 px-5 py-4">
+
+                ⚙ Configuración
+
+            </button>
+
+        </nav>
+
+        <div class="p-6 text-sm text-slate-500">
+
+            Momentum v1.0
 
         </div>
 
-    </div>
+    </aside>
 
-</div>
+    <!-- CONTENIDO -->
 
-<script src="script.js"></script>
+    <main class="flex-1">
 
-</body>
-</html>
+        <!-- HEADER -->
+
+        <header
+            class="border-b border-slate-800 px-10 py-8 flex justify-between items-center">
+
+            <div>
+
+                <h2
+                    class="text-4xl font-bold">
+
+                    Buenos días 👋
+
+                </h2>
+
+                <p
+                    id="todayDate"
+                    class="text-slate-400 mt-2">
+
+                    ...
+
+                </p>
+
+            </div>
+
+            <div class="flex gap-4">
+
+                <button
+                    id="themeButton"
+                    class="w-12 h-12 rounded-xl bg-slate-800 hover:bg-slate-700">
+
+                    🌙
+
+                </button>
+
+                <button
+                    class="w-12 h-12 rounded-xl bg-slate-800 hover:bg-slate-700">
+
+                    ⚙
+
+                </button>
+
+            </div>
+
+        </header>
+
+        <!-- DASHBOARD -->
+
+        <section
+            class="p-10">
+
+            <div
+                class="grid lg:grid-cols-4 gap-6">
+
+                <div
+                    class="lg:col-span-2 bg-slate-900 rounded-3xl p-8">
+
+                    <h3
+                        class="text-2xl font-bold">
+
+                        Progreso del día
+
+                    </h3>
+
+                    <div
+                        class="mt-8 flex items-center gap-8">
+
+                        <div
+                            class="w-48 h-48 rounded-full border-8 border-blue-500 flex items-center justify-center">
+
+                            <div
+                                class="text-center">
+
+                                <div
+                                    id="globalPercent"
+                                    class="text-5xl font-bold">
+
+                                    0%
+
+                                </div>
+
+                                <div
+                                    class="text-slate-400">
+
+                                    completado
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="space-y-6">
+
+                            <div>
+
+                                <div class="text-slate-400">
+
+                                    Objetivos
+
+                                </div>
+
+                                <div
+                                    id="goalCounter"
+                                    class="text-4xl font-bold">
+
+                                    0
+
+                                </div>
+
+                            </div>
+
+                            <div>
+
+                                <div class="text-slate-400">
+
+                                    Completados
+
+                                </div>
+
+                                <div
+                                    id="completedCounter"
+                                    class="text-4xl font-bold">
+
+                                    0
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="bg-slate-900 rounded-3xl p-8">
+
+                    <h3 class="text-xl font-bold">
+
+                        🔥 Racha
+
+                    </h3>
+
+                    <div
+                        class="text-6xl font-bold mt-10">
+
+                        0
+
+                    </div>
+
+                    <p
+                        class="text-slate-400 mt-3">
+
+                        días seguidos
+
+                    </p>
+
+                </div>
+
+                <div
+                    class="bg-slate-900 rounded-3xl p-8">
+
+                    <h3 class="text-xl font-bold">
+
+                        ⭐ Nivel
+
+                    </h3>
+
+                    <div
+                        class="text-6xl font-bold mt-10">
+
+                        1
+
+                    </div>
+
+                    <p
+                        class="text-slate-400 mt-3">
+
+                        0 XP
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- BUSCADOR -->
+
+            <div
+                class="mt-10 flex gap-4">
+
+                <input
+
+                    id="search"
+
+                    class="flex-1 rounded-2xl bg-slate-900 p-4 outline-none"
+
+                    placeholder="Buscar objetivo...">
+
+                <select
+
+                    id="filter"
+
+                    class="bg-slate-900 rounded-2xl px-6">
+
+                    <option value="all">
+
+                        Todos
+
+                    </option>
+
+                    <option value="pending">
+
+                        Pendientes
+
+                    </option>
+
+                    <option value="completed">
+
+                        Completados
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- ACA VAN LOS OBJETIVOS -->
+
+            <div
+
+                id="goals"
+
+                class="grid xl:grid-cols-2 gap-6 mt-10">
+
+            </div>
