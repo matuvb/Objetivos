@@ -1,212 +1,217 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mis Objetivos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeTracker</title>
 
-<style>
-body{
-    font-family:Arial,sans-serif;
-    background:#f4f4f4;
-    margin:40px;
-}
+    <link rel="stylesheet" href="style.css">
 
-h1{
-    text-align:center;
-}
-
-#nuevoObjetivo{
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    margin-bottom:30px;
-    box-shadow:0 0 10px rgba(0,0,0,.1);
-}
-
-input{
-    padding:8px;
-    margin:5px;
-}
-
-button{
-    padding:8px 15px;
-    cursor:pointer;
-}
-
-.objetivo{
-    background:white;
-    padding:20px;
-    margin-bottom:20px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,.1);
-}
-
-.barra{
-    width:100%;
-    height:28px;
-    background:#ddd;
-    border-radius:20px;
-    overflow:hidden;
-    margin:15px 0;
-}
-
-.relleno{
-    height:100%;
-    width:0%;
-    background:linear-gradient(90deg,#4CAF50,#7CFC00);
-    transition:.3s;
-}
-
-.controles button{
-    margin-right:8px;
-}
-</style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 </head>
+
 <body>
 
-<h1>🎯 Mis Objetivos</h1>
+<div class="app">
 
-<div id="nuevoObjetivo">
+    <header>
 
-<input id="nombre" placeholder="Nombre del objetivo">
+        <div>
 
-<input id="meta" type="number" placeholder="Meta">
+            <h1>LifeTracker</h1>
 
-<button onclick="crearObjetivo()">Agregar</button>
+            <p id="fecha"></p>
+
+        </div>
+
+        <button id="themeButton">
+            🌙
+        </button>
+
+    </header>
+
+    <section class="dashboard">
+
+        <div class="circle">
+
+            <svg>
+
+                <circle
+                    class="background"
+                    cx="90"
+                    cy="90"
+                    r="70">
+                </circle>
+
+                <circle
+                    id="progressCircle"
+                    class="progress"
+                    cx="90"
+                    cy="90"
+                    r="70">
+                </circle>
+
+            </svg>
+
+            <div class="circleText">
+
+                <span id="generalPercent">0%</span>
+
+                <small>Hoy</small>
+
+            </div>
+
+        </div>
+
+        <div class="dashboardInfo">
+
+            <div class="card">
+
+                <h3>Objetivos</h3>
+
+                <span id="goalCount">0</span>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Completados</h3>
+
+                <span id="completedCount">0</span>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Racha</h3>
+
+                <span>🔥 0</span>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Nivel</h3>
+
+                <span>⭐ 1</span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="toolbar">
+
+        <input
+        id="search"
+        placeholder="Buscar objetivo...">
+
+        <select id="filter">
+
+            <option value="all">Todos</option>
+
+            <option value="pending">Pendientes</option>
+
+            <option value="completed">Completados</option>
+
+        </select>
+
+    </section>
+
+    <section id="goalList">
+
+    </section>
 
 </div>
 
-<div id="lista"></div>
+<button id="addButton">
++
+</button>
 
-<script>
+<div id="modal" class="hidden">
 
-let objetivos = JSON.parse(localStorage.getItem("objetivos")) || [];
+    <div class="modalContent">
 
-function guardar(){
-    localStorage.setItem("objetivos",JSON.stringify(objetivos));
-}
+        <h2>Nuevo objetivo</h2>
 
-function crearObjetivo(){
+        <input
+        id="goalEmoji"
+        placeholder="😀 Emoji">
 
-    let nombre=document.getElementById("nombre").value;
+        <input
+        id="goalName"
+        placeholder="Nombre">
 
-    let meta=parseFloat(document.getElementById("meta").value);
+        <input
+        id="goalTarget"
+        type="number"
+        placeholder="Meta">
 
-    if(nombre=="" || meta<=0) return;
+        <select id="goalUnit">
 
-    objetivos.push({
-        nombre:nombre,
-        meta:meta,
-        progreso:0
-    });
+            <option>pasos</option>
 
-    guardar();
+            <option>horas</option>
 
-    document.getElementById("nombre").value="";
-    document.getElementById("meta").value="";
+            <option>minutos</option>
 
-    mostrar();
+            <option>litros</option>
 
-}
+            <option>km</option>
 
-function sumar(i){
+            <option>kg</option>
 
-    let cantidad=prompt("¿Cuánto querés agregar?");
+            <option>páginas</option>
 
-    if(cantidad===null)return;
+            <option>sesiones</option>
 
-    cantidad=parseFloat(cantidad);
+            <option>personalizado</option>
 
-    if(isNaN(cantidad))return;
+        </select>
 
-    objetivos[i].progreso+=cantidad;
+        <select id="goalCategory">
 
-    if(objetivos[i].progreso>objetivos[i].meta)
-        objetivos[i].progreso=objetivos[i].meta;
+            <option>❤️ Salud</option>
 
-    guardar();
+            <option>📚 Estudio</option>
 
-    mostrar();
+            <option>🏋 Gimnasio</option>
 
-}
+            <option>💼 Trabajo</option>
 
-function restar(i){
+            <option>💰 Finanzas</option>
 
-    let cantidad=prompt("¿Cuánto querés restar?");
+            <option>🧠 Personal</option>
 
-    if(cantidad===null)return;
+            <option>🎮 Ocio</option>
 
-    cantidad=parseFloat(cantidad);
+        </select>
 
-    if(isNaN(cantidad))return;
+        <input
+        type="color"
+        id="goalColor"
+        value="#4CAF50">
 
-    objetivos[i].progreso-=cantidad;
+        <div class="modalButtons">
 
-    if(objetivos[i].progreso<0)
-        objetivos[i].progreso=0;
+            <button id="cancelButton">
+                Cancelar
+            </button>
 
-    guardar();
-
-    mostrar();
-
-}
-
-function borrar(i){
-
-    if(confirm("¿Eliminar este objetivo?")){
-        objetivos.splice(i,1);
-        guardar();
-        mostrar();
-    }
-
-}
-
-function mostrar(){
-
-    let html="";
-
-    objetivos.forEach((o,i)=>{
-
-        let porcentaje=(o.progreso/o.meta)*100;
-
-        if(porcentaje>100) porcentaje=100;
-
-        html+=`
-        <div class="objetivo">
-
-        <h2>${o.nombre}</h2>
-
-        <div>${o.progreso} / ${o.meta}</div>
-
-        <div class="barra">
-            <div class="relleno" style="width:${porcentaje}%"></div>
-        </div>
-
-        <div>${porcentaje.toFixed(1)}%</div>
-
-        <div class="controles">
-
-        <button onclick="sumar(${i})">➕ Agregar progreso</button>
-
-        <button onclick="restar(${i})">➖ Restar</button>
-
-        <button onclick="borrar(${i})">🗑 Eliminar</button>
+            <button id="saveButton">
+                Guardar
+            </button>
 
         </div>
 
-        </div>
-        `;
-    });
+    </div>
 
-    document.getElementById("lista").innerHTML=html;
+</div>
 
-}
-
-mostrar();
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
